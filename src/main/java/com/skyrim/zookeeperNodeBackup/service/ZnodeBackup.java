@@ -9,6 +9,7 @@ import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.client.ZKClientConfig;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Stat;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -21,6 +22,9 @@ import java.util.concurrent.CountDownLatch;
  */
 @Service
 public class ZnodeBackup implements Watcher {
+
+    @Value("${zkInfo}")
+    private String zkInfo;
 
     private static CountDownLatch latch = new CountDownLatch(1);
 
@@ -249,7 +253,7 @@ public class ZnodeBackup implements Watcher {
     public List<ZkInfo> getZkInfo() {
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader("zkInfo.cfg"));//读取配置文件
+            br = new BufferedReader(new FileReader(zkInfo));//读取配置文件
 //            br = new BufferedReader(new FileReader("src\\main\\resources\\zkInfo.cfg"));//读取配置文件
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -287,4 +291,6 @@ public class ZnodeBackup implements Watcher {
             latch.countDown();
         }
     }
+
+
 }

@@ -3,6 +3,10 @@ package com.skyrim.zookeeperNodeBackup.action;
 import com.skyrim.zookeeperNodeBackup.entity.ZkInfo;
 import com.skyrim.zookeeperNodeBackup.service.ZnodeBackup;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,7 +15,8 @@ import java.util.List;
  * Created by Skyrim on 2021/5/10 15:49
  */
 @Component
-public class BackupAction {
+@EnableScheduling
+public class BackupAction implements ApplicationRunner {
     @Autowired
     private ZnodeBackup znodeBackup;
 
@@ -34,4 +39,9 @@ public class BackupAction {
         }
     }
 
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+//        System.out.println(trustStorePath);
+        runBackup();
+    }
 }

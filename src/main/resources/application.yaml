@@ -1,1 +1,15 @@
+#
+#
+#
+#
+#ssl:
+#  keyStore:
+#    #    path: src/main/resources/ssl/detectkeystore.jks
+#    path: src/main/resources/wslssl/testsslkeystore.jks
+#    passwd: d40gJi53
+#  trustStore:
+#    #    path: src/main/resources/ssl/detecttruststore.jks
+#    path: src/main/resources/wslssl/testssltruststore.jks
+#    passwd: d40gJi53
 
+zkInfo: zkInfo.cfg
