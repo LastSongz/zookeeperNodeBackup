@@ -1,0 +1,19 @@
+[
+  {
+    "connectPath":"172.27.187.211:2181",
+    "saveFilePath":"C:\\Users\\KaiXuan\\Work\\smallTools\\zookeeperNodeBackup\\src\\main\\resources",
+    "acl":[
+      {"acl":"digest:acl:111111"},
+      {"acl":"digest:acl2:222222"},
+      {"acl":"digest:acl3:zzzxxx123"}
+    ]
+  },
+  {
+    "connectPath":"172.27.187.211:22181",
+    "saveFilePath":"C:\\Users\\KaiXuan\\Work\\smallTools\\zookeeperNodeBackup\\src\\main\\resources\\sslbak",
+    "acl":[
+      {"acl":"digest:acl:111111"}
+    ],
+    "sslClientCfg":"C:\\Users\\KaiXuan\\Work\\smallTools\\zookeeperNodeBackup\\src\\main\\resources\\zkClient.cfg"
+  }
+]

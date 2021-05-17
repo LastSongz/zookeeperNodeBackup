@@ -1,0 +1,21 @@
+[
+  {
+    "connectPath":"172.27.187.211:22181",
+    "saveFilePath":"C:\\Users\\KaiXuan\\Work\\smallTools\\zookeeperNodeBackup\\src\\main\\resources\\znodeBackup111.json",
+    "acl":[
+      {"acl":"digest:acl:111111"},
+      {"acl":"digest:acl2:222222"},
+      {"acl":"digest:acl3:zzzxxx123"}
+    ],
+    "sslClientCfg":"C:\\Users\\KaiXuan\\Work\\smallTools\\zookeeperNodeBackup\\src\\main\\resources\\zkClient.cfg"
+  },
+  {
+    "connectPath":"172.27.187.211:2181",
+    "saveFilePath":"C:\\Users\\KaiXuan\\Work\\smallTools\\zookeeperNodeBackup\\src\\main\\resources\\znodeBackup111.json",
+    "acl":[
+      {"acl":"digest:acl:111111"},
+      {"acl":"digest:acl2:222222"},
+      {"acl":"digest:acl3:zzzxxx123"}
+    ]
+  }
+]

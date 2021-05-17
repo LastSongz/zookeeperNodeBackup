@@ -12,4 +12,9 @@
 #    path: src/main/resources/wslssl/testssltruststore.jks
 #    passwd: d40gJi53
 
-zkInfo: zkInfo.cfg
+#zkInfo: zkInfo.json
+zkInfo: C:\Users\KaiXuan\Work\smallTools\zookeeperNodeBackup\src\main\resources\zkInfo.json
+recoverInfo: C:\Users\KaiXuan\Work\smallTools\zookeeperNodeBackup\src\main\resources\recoverInfo.json
+
+backup: 0
+recover: 1
