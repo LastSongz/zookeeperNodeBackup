@@ -1,3 +1,5 @@
+该备份工具用于备份以及恢复zookeeper的节点以及数据
+
 # 使用方法
 
 1、部署到linux后，查看当前机器的/etc/profile文件中jdk环境变量，编辑bin/start.sh,修改jdk环境变量配置为当前机器的jdk环境变量，vi 启动脚本后用‘set ff=unix’设置脚本格式
