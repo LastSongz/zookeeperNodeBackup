@@ -1,2 +1,2 @@
 0 5 * * * /home/zookeeper/zookeeperNodeBackup/bin/start.sh > /dev/null 2>&1
-0 6 * * 1 /home/ffcsmnt/znodeBackup_jar/clean.sh
+0 6 * * 1 /home/zookeeper/zookeeperNodeBackup/bin/clean.sh

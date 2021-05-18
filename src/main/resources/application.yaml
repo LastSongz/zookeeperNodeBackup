@@ -1,17 +1,3 @@
-#
-#
-#
-#
-#ssl:
-#  keyStore:
-#    #    path: src/main/resources/ssl/detectkeystore.jks
-#    path: src/main/resources/wslssl/testsslkeystore.jks
-#    passwd: d40gJi53
-#  trustStore:
-#    #    path: src/main/resources/ssl/detecttruststore.jks
-#    path: src/main/resources/wslssl/testssltruststore.jks
-#    passwd: d40gJi53
-
 #zkInfo: zkInfo.json
 zkInfo: C:\Users\KaiXuan\Work\smallTools\zookeeperNodeBackup\src\main\resources\zkInfo.json
 recoverInfo: C:\Users\KaiXuan\Work\smallTools\zookeeperNodeBackup\src\main\resources\recoverInfo.json
