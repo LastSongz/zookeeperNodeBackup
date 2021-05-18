@@ -9,6 +9,8 @@ import org.apache.zookeeper.client.ZKClientConfig;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Id;
 import org.apache.zookeeper.server.auth.DigestAuthenticationProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,7 @@ import java.util.Map;
  */
 @Service
 public class ZnodeRecover {
-
+    private final static Logger logger = LoggerFactory.getLogger(ZnodeRecover.class);
     @Value("${recoverInfo}")
     private String recoverInfo;
 
@@ -33,7 +35,7 @@ public class ZnodeRecover {
             String path = znode.getPath();
             try {
                 //如果待恢复节点不存在zk中，则对该节点进行恢复
-                System.out.println("正在还原{"+"znode："+path+"}");
+                logger.info("正在还原{"+"znode："+path+"}");
                 if (zooKeeper.exists(path, null) == null) {
                     //拉取待备份节点的acl信息
                     List<ACL> acls = znode.getAcl();
@@ -66,9 +68,9 @@ public class ZnodeRecover {
                         createMode = CreateMode.EPHEMERAL;
                     }
                     String s = zooKeeper.create(path, znode.getData().getBytes(), acls, createMode, znode.getStat());
-                    System.out.println("已还原{"+"znode："+path+"结果："+s+"}");
+                    logger.info("已还原{"+"znode："+path+"结果："+s+"}");
                 }else {
-                    System.out.println("该节点{"+"znode:"+path+"}，已存在！");
+                    logger.info("该节点{"+"znode:"+path+"}，已存在！");
                 }
             } catch (KeeperException e) {
                 e.printStackTrace();
@@ -104,15 +106,15 @@ public class ZnodeRecover {
             Watcher watcher = new Watcher() {
                 @Override
                 public void process(WatchedEvent event) {
-                    System.out.println("==========DefaultWatcher start==============");
+                    logger.info("==========DefaultWatcher start==============");
 
-                    System.out.println("DefaultWatcher state: " + event.getState().name());
+                    logger.info("DefaultWatcher state: " + event.getState().name());
 
-                    System.out.println("DefaultWatcher type: " + event.getType().name());
+                    logger.info("DefaultWatcher type: " + event.getType().name());
 
-                    System.out.println("DefaultWatcher path: " + event.getPath());
+                    logger.info("DefaultWatcher path: " + event.getPath());
 
-                    System.out.println("==========DefaultWatcher end==============");
+                    logger.info("==========DefaultWatcher end==============");
                 }
             };
             //是否使用ssl认证
@@ -144,13 +146,13 @@ public class ZnodeRecover {
                 config.setProperty("zookeeper.ssl.trustStore.password", ssl.get(5));
                 config.setProperty("zookeeper.ssl.hostnameVerification", "false");
 
-                System.out.println("ssl链接地址！！！！！！！！！！！！！！！！！！！");
-                System.out.println(info.getConnectPath());
+                logger.info("ssl链接地址！！！！！！！！！！！！！！！！！！！");
+                logger.info(info.getConnectPath());
                 zk = new ZooKeeper(info.getConnectPath(), 30000, watcher, config);
 
             } else {
-                System.out.println("链接地址！！！！！！！！！！！！！！！！！！！");
-                System.out.println(info.getConnectPath());
+                logger.info("链接地址！！！！！！！！！！！！！！！！！！！");
+                logger.info(info.getConnectPath());
                 zk = new ZooKeeper(info.getConnectPath(), 30000, watcher);
             }
 //            try {

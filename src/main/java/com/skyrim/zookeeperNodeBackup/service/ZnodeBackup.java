@@ -2,6 +2,7 @@ package com.skyrim.zookeeperNodeBackup.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.skyrim.zookeeperNodeBackup.action.BackupAction;
 import com.skyrim.zookeeperNodeBackup.entity.ZkInfo;
 import org.apache.commons.io.FileUtils;
 import org.apache.zookeeper.KeeperException;
@@ -11,6 +12,8 @@ import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.client.ZKClientConfig;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Stat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +27,7 @@ import java.util.concurrent.CountDownLatch;
  */
 @Service
 public class ZnodeBackup implements Watcher {
-
+    private final static Logger logger = LoggerFactory.getLogger(ZnodeBackup.class);
     @Value("${zkInfo}")
     private String zkInfo;
 
@@ -43,15 +46,16 @@ public class ZnodeBackup implements Watcher {
             Watcher watcher = new Watcher() {
                 @Override
                 public void process(WatchedEvent event) {
-                    System.out.println("==========DefaultWatcher start==============");
-
-                    System.out.println("DefaultWatcher state: " + event.getState().name());
-
-                    System.out.println("DefaultWatcher type: " + event.getType().name());
-
-                    System.out.println("DefaultWatcher path: " + event.getPath());
-
-                    System.out.println("==========DefaultWatcher end==============");
+                    logger.info("==========DefaultWatcher start==============");
+//                    logger.info("==========DefaultWatcher start==============");
+                    logger.info("DefaultWatcher state: " + event.getState().name());
+//                    logger.info("DefaultWatcher state: " + event.getState().name());
+                    logger.info("DefaultWatcher type: " + event.getType().name());
+//                    logger.info("DefaultWatcher type: " + event.getType().name());
+                    logger.info("DefaultWatcher path: " + event.getPath());
+//                    logger.info("DefaultWatcher path: " + event.getPath());
+                    logger.info("==========DefaultWatcher end==============");
+//                    logger.info("==========DefaultWatcher end==============");
                 }
             };
             //是否使用ssl认证
@@ -83,13 +87,13 @@ public class ZnodeBackup implements Watcher {
                 config.setProperty("zookeeper.ssl.trustStore.password", ssl.get(5));
                 config.setProperty("zookeeper.ssl.hostnameVerification", "false");
 
-                System.out.println("ssl链接地址！！！！！！！！！！！！！！！！！！！");
-                System.out.println(info.getConnectPath());
+                logger.info("ssl链接地址！！！！！！！！！！！！！！！！！！！");
+                logger.info(info.getConnectPath());
                 zk = new ZooKeeper(info.getConnectPath(), 50000, watcher, config);
 
             } else {
-                System.out.println("链接地址！！！！！！！！！！！！！！！！！！！");
-                System.out.println(info.getConnectPath());
+                logger.info("链接地址！！！！！！！！！！！！！！！！！！！");
+                logger.info(info.getConnectPath());
                 zk = new ZooKeeper(info.getConnectPath(), 50000, watcher);
             }
 //            try {
@@ -112,7 +116,7 @@ public class ZnodeBackup implements Watcher {
         }
 
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");//设置日期格式
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");//设置日期格式
         String currentTime = df.format(new Date());// new Date()为获取当前系统时间
 
         try {
@@ -132,7 +136,7 @@ public class ZnodeBackup implements Watcher {
         /**
          * 这一段是以json格式将znode备份信息输出到文件中，方便查看
          */
-            File znodeBackup = new File(info.getSaveFilePath() + "/znodeBackup" + currentTime + ".json");
+        File znodeBackup = new File(info.getSaveFilePath() + "/znodeBackup" + currentTime + ".json");
 //        File znodeBackup = new File(info.getSaveFilePath() + "\\znodeBackup" + ".json");
         File f = new File(info.getSaveFilePath());
         if (!f.exists()) {
@@ -193,7 +197,7 @@ public class ZnodeBackup implements Watcher {
 //            e.printStackTrace();
 //        }
 
-        System.out.println("\n\n" + "备份完成！\n" + "zk地址：" + info.getConnectPath() + "\n" + "备份位置：" + info.getSaveFilePath() + "/znodeBackup" + currentTime + ".json");
+        logger.info("\n\n" + "备份完成！\n" + "zk地址：" + info.getConnectPath() + "\n" + "备份位置：" + info.getSaveFilePath() + "/znodeBackup" + currentTime + ".json");
     }
 
     /**
@@ -219,18 +223,33 @@ public class ZnodeBackup implements Watcher {
 
         if (zkData != null) {
             String zkDatas = new String(zkData);
-            node.put("data", zkDatas);
+            boolean result = false;
+            Map zkMapData = null;
+            try {
+                zkMapData = JSON.parseObject(zkDatas, HashMap.class);
+                result = true;
+            } catch (Exception e) {
+                result = false;
+            }
+            if (result) {
+
+                logger.info("========这是一个map=========");
+                node.put("data", zkMapData);
+            } else {
+                logger.info("========普通string=========");
+                node.put("data", zkDatas);
+            }
             node.put("acl", acl);
             node.put("stat", stat);
             node.put("path", path);
 
-            System.out.println(path + "=" + zkDatas + "=" + acl.toString() + "=" + stat.toString());
+            logger.info(path + "=" + zkDatas + "=" + acl.toString() + "=" + stat.toString());
         } else {
             node.put("acl", acl);
             node.put("stat", stat);
             node.put("path", path);
 
-            System.out.println(path + "=" + acl.toString() + "=" + stat.toString());
+            logger.info(path + "=" + acl.toString() + "=" + stat.toString());
         }
         znodeList.add(node);
         //获取子节点
@@ -238,7 +257,7 @@ public class ZnodeBackup implements Watcher {
 
         //判断是否有子节点，如果，结束当前方法
         if (childrens.isEmpty() || childrens == null) {
-            System.out.println();
+            logger.info("当前节点无子节点");
             return;
         }
 

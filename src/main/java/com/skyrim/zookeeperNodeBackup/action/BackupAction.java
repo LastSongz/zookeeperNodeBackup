@@ -5,6 +5,8 @@ import com.skyrim.zookeeperNodeBackup.entity.Znode;
 import com.skyrim.zookeeperNodeBackup.service.ZnodeBackup;
 import com.skyrim.zookeeperNodeBackup.service.ZnodeRecover;
 import org.apache.zookeeper.ZooKeeper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
@@ -21,6 +23,9 @@ import java.util.List;
 @Component
 @EnableScheduling
 public class BackupAction implements ApplicationRunner {
+
+    private  final  static Logger logger = LoggerFactory.getLogger(BackupAction.class);
+
     @Autowired
     private ZnodeBackup znodeBackup;
 
@@ -46,7 +51,7 @@ public class BackupAction implements ApplicationRunner {
          */
         List<ZkInfo> zkInfoList = znodeBackup.getZkInfo();
         for (ZkInfo info : zkInfoList) {
-            System.out.println(info.toString());
+            logger.info(info.toString());
             try {
                 znodeBackup.backup(info);
             } catch (InterruptedException e) {
@@ -59,7 +64,7 @@ public class BackupAction implements ApplicationRunner {
     public void runRecover() {
         List<ZkInfo> zkInfo = znodeRecover.getZkInfo();
         for (ZkInfo info : zkInfo) {
-            System.out.println(info.toString());
+            logger.info(info.toString());
             ZooKeeper zooKeeper = znodeRecover.connect(info);
             List<Znode> znodes = null;
             try {
@@ -69,7 +74,7 @@ public class BackupAction implements ApplicationRunner {
             }
             znodeRecover.recover(zooKeeper,znodes,info);
             try {
-                System.out.println("备份完成，断开zk连接");
+                logger.info("备份完成，断开zk连接");
                 zooKeeper.close();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -79,21 +84,21 @@ public class BackupAction implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//        System.out.println(trustStorePath);
+//        logger.info(trustStorePath);
         if (backup == 1) {
-            System.out.println("=======================开始备份=========================");
-            System.out.println("=======================开始备份=========================");
-            System.out.println("=======================开始备份=========================");
+            logger.info("=======================开始备份=========================");
+            logger.info("=======================开始备份=========================");
+            logger.info("=======================开始备份=========================");
             runBackup();
         } else {
             if (recover == 1){
-                System.out.println("===========================================================================");
-                System.out.println("==============================backup == 0，不执行备份=========================");
-                System.out.println("==============================backup == 0，不执行备份=========================");
-                System.out.println("==============================backup == 0，不执行备份=========================");
-                System.out.println("==============================backup == 0，不执行备份=========================");
-                System.out.println("==============================backup == 0，不执行备份=========================");
-                System.out.println("===========================================================================");
+                logger.info("===========================================================================");
+                logger.info("==============================backup == 0，不执行备份=========================");
+                logger.info("==============================backup == 0，不执行备份=========================");
+                logger.info("==============================backup == 0，不执行备份=========================");
+                logger.info("==============================backup == 0，不执行备份=========================");
+                logger.info("==============================backup == 0，不执行备份=========================");
+                logger.info("===========================================================================");
                 runRecover();
             }
         }

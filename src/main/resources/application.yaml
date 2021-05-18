@@ -16,5 +16,6 @@
 zkInfo: C:\Users\KaiXuan\Work\smallTools\zookeeperNodeBackup\src\main\resources\zkInfo.json
 recoverInfo: C:\Users\KaiXuan\Work\smallTools\zookeeperNodeBackup\src\main\resources\recoverInfo.json
 
-backup: 0
-recover: 1
+#只能二选一，backup生效后recover不会再生效
+backup: 1
+recover: 0

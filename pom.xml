@@ -59,7 +59,57 @@
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+<!--                    <excludes>-->
+<!--                        <exclude>*.yml</exclude>-->
+<!--                        <exclude>*.yaml</exclude>-->
+<!--                        <exclude>*.properties</exclude>-->
+<!--                        <exclude>*/**.xml</exclude>-->
+<!--                        <exclude>*.xml</exclude>-->
+<!--                        <exclude>*.txt</exclude>-->
+<!--                        <exclude>*.cer</exclude>-->
+<!--                        <exclude>*.jks</exclude>-->
+<!--                        <exclude>*.json</exclude>-->
+<!--                        <exclude>*.cfg</exclude>-->
+<!--                    </excludes>-->
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>./</classpathPrefix>
+                            <!--修改为启动类-->
+                            <mainClass>com.skyrim.zookeeperNodeBackup.ZookeeperNodeBackupApplication</mainClass>
+                            <useUniqueVersions>false</useUniqueVersions>
+                        </manifest>
+                        <manifestEntries>
+                            <Class-Path>../conf/</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
