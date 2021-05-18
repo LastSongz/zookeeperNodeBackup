@@ -1,0 +1,34 @@
+[
+    {
+      "connectPath":"ip:port",    //zk连接地址，仅支持连接一个zk节点
+      "saveFilePath":"/path/to/save/znode",  //备份时此处填存储备份的文件夹目录，恢复znode时此处填写备份文件的路径
+      "acl": [                           //acl认证信息列表，若无则将此键值对删除
+        {
+            "acl": "schema:user:passwd"  
+          },
+          {
+            "acl": "digest:acl2:222222"
+          },
+          {
+            "acl": "digest:acl3:zzzxxx123"
+          }
+      ],
+      "sslClientCfg": "/path/to/sslClientCfg"   //ssl连接配置文件，若无则将此键值对删除
+    },
+    {
+        "connectPath": "172.28.222.4:2181",
+        "saveFilePath": "C:\\Users\\KaiXuan\\Work\\smallTools\\zookeeperNodeBackup\\src\\main\\resources\\znodeBackup111.json",
+        "acl": [
+          {
+            "acl": "digest:acl:111111"
+          },
+          {
+            "acl": "digest:acl2:222222"
+          },
+          {
+            "acl": "digest:acl3:zzzxxx123"
+          }
+        ]
+    }
+
+]
